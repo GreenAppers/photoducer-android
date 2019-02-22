@@ -30,17 +30,21 @@ before_install:
   - echo $TRAVIS_OS_NAME
   - echo ${HOME}
   - echo ${TRAVIS_BUILD_DIR}
-  - git clone https://github.com/flutter/flutter.git -b stable --depth 1
-  - ./flutter/bin/flutter doctor
-  - ./flutter/bin/flutter packages get
   - gem install fastlane
+  - git clone https://github.com/flutter/flutter.git -b stable --depth 1
+  - cd photoducer
+  - ../flutter/bin/flutter doctor
+  - ../flutter/bin/flutter packages get
+  - cd ..
 
 before_script:
   - openssl aes-256-cbc -k $ENCRYPTION_PASSWORD -in travis-ci-apk-upload.json.enc -d -a -out travis-ci-apk-upload.json
   - openssl aes-256-cbc -k $ENCRYPTION_PASSWORD -in photoducer/android/Photoducer_Distribution.keystore.enc -d -a -out photoducer/android/Photoducer_Distribution.keystore
 
 script:
-  - ./flutter/bin/flutter -v build apk --release
+  - cd photoducer
+  - ../flutter/bin/flutter -v build apk --release
+  - cd ..
   - fastlane submit_playalpha
 
 after_success:
