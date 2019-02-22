@@ -1,3 +1,4 @@
+os: linux
 language: android
 jdk: oraclejdk8
 
@@ -5,6 +6,15 @@ licenses:
   - android-sdk-preview-license-.+
   - android-sdk-license-.+
   - google-gdk-license-.+
+
+addons:
+  apt:
+    # Flutter dependencies
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - libstdc++6
+      - fonts-droid
 
 android:
   components:
@@ -20,15 +30,17 @@ before_install:
   - echo $TRAVIS_OS_NAME
   - echo ${HOME}
   - echo ${TRAVIS_BUILD_DIR}
+  - git clone https://github.com/flutter/flutter.git -b stable --depth 1
+  - ./flutter/bin/flutter doctor
+  - ./flutter/bin/flutter packages get
   - gem install fastlane
-  - find / -name flutter
 
 before_script:
   - openssl aes-256-cbc -k $ENCRYPTION_PASSWORD -in travis-ci-apk-upload.json.enc -d -a -out travis-ci-apk-upload.json
   - openssl aes-256-cbc -k $ENCRYPTION_PASSWORD -in photoducer/android/Photoducer_Distribution.keystore.enc -d -a -out photoducer/android/Photoducer_Distribution.keystore
 
 script:
-  - flutter -v build apk --release
+  - ./flutter/bin/flutter -v build apk --release
   - fastlane submit_playalpha
 
 after_success:
