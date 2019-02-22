@@ -1,0 +1,15 @@
+desc "Build and submit to Google Play Alpha"
+lane :submit_playalpha do
+
+  gradle(
+    task: "assembleRelease crashlyticsUploadSymbolsRelease",
+    project_dir: "photoducer/android"
+  )
+
+  supply(
+    track: "alpha",
+    apk: "#{lane_context[SharedValues::GRADLE_APK_OUTPUT_PATH]}",
+    mapping: "photoducer/android/build/outputs/mapping/release/mapping.txt"
+  )
+
+end
