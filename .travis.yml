@@ -20,7 +20,7 @@ android:
   components:
     - tools
     - platform-tools
-    - build-tools-27.0.2
+    - build-tools-28.0.3
     - android-27
     - extra-android-m2repository
     - extra-google-m2repository
@@ -41,6 +41,8 @@ before_install:
 before_script:
   - openssl aes-256-cbc -k $ENCRYPTION_PASSWORD -in travis-ci-apk-upload.json.enc -d -a -out travis-ci-apk-upload.json
   - openssl aes-256-cbc -k $ENCRYPTION_PASSWORD -in photoducer/android/Photoducer_Distribution.keystore.enc -d -a -out photoducer/android/Photoducer_Distribution.keystore
+  - echo storePassword=$KEYSTORE_PASSWORD >> photoducer/android/key.properties
+  - echo keyPassword=$KEY_PASSWORD >> photoducer/android/key.properties
 
 script:
   - cd photoducer

@@ -7,4 +7,15 @@ lane :submit_playalpha do
     mapping: "photoducer/build/app/outputs/mapping/release/mapping.txt"
   )
 
+  slack(
+    message: "Photoducer for Android successfully released!",
+    channel: "#greenappers",
+    payload: {
+      "Build Date" => Time.new.to_s,
+      "Built by" => "Travis",
+    },
+    default_payloads: [:lane, :last_git_commit_message],
+    slack_url: "https://hooks.slack.com/services/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"
+  )
+
 end
