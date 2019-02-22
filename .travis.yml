@@ -1,15 +1,20 @@
 language: android
 jdk: oraclejdk8
 
+licenses:
+  - android-sdk-preview-license-.+
+  - android-sdk-license-.+
+  - google-gdk-license-.+
+
 android:
   components:
     - tools
     - platform-tools
     - build-tools-27.0.2
     - android-27
-
-licenses:
-  - android-sdk-license-.+
+    - extra-android-m2repository
+    - extra-google-m2repository
+    - extra-google-android-support
 
 before_install:
   - echo $TRAVIS_OS_NAME
@@ -23,6 +28,7 @@ before_script:
   - openssl aes-256-cbc -k $ENCRYPTION_PASSWORD -in photoducer/android/Photoducer_Distribution.keystore.enc -d -a -out photoducer/android/Photoducer_Distribution.keystore
 
 script:
+  - ./flutter/bin/flutter build apk --release
   - fastlane submit_playalpha
 
 after_success:
