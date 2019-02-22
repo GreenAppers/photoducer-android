@@ -21,7 +21,6 @@ before_install:
   - echo ${HOME}
   - echo ${TRAVIS_BUILD_DIR}
   - gem install fastlane
-  - which flutter
   - find / -name flutter
 
 before_script:
