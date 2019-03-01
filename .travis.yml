@@ -26,6 +26,10 @@ android:
     - extra-google-m2repository
     - extra-google-android-support
 
+cache:
+  directories:
+  - "$HOME/google-cloud-sdk/"
+
 before_install:
   - echo $TRAVIS_OS_NAME
   - echo ${HOME}
@@ -41,11 +45,18 @@ before_install:
 before_script:
   - openssl aes-256-cbc -k $ENCRYPTION_PASSWORD -in travis-ci-apk-upload.json.enc -d -a -out travis-ci-apk-upload.json
   - openssl aes-256-cbc -k $ENCRYPTION_PASSWORD -in photoducer/android/Photoducer_Distribution.keystore.enc -d -a -out photoducer/android/Photoducer_Distribution.keystore
+  - openssl aes-256-cbc -K $ENCRYPTION_PASSWORD -in research-storage-account.json.enc -d -a -out ${HOME}/research-storage-account.json
+  - export GOOGLE_APPLICATION_CREDENTIALS=${HOME}/research-storage-account.json
   - echo storePassword=$KEYSTORE_PASSWORD >> photoducer/android/key.properties
   - echo keyPassword=$KEY_PASSWORD >> photoducer/android/key.properties
+  - gcloud version || true
+  - if [ ! -d "$HOME/google-cloud-sdk/bin" ]; then rm -rf $HOME/google-cloud-sdk; export CLOUDSDK_CORE_DISABLE_PROMPTS=1; curl https://sdk.cloud.google.com | bash; fi
+  - source $HOME/google-cloud-sdk/path.bash.inc
+  - gcloud version
 
 script:
   - cd photoducer
+  - gsutil cp gs://research-model-bucket/*.t* assets
   - ../flutter/bin/flutter -v build apk --release
   - cd ..
   - fastlane submit_playalpha
