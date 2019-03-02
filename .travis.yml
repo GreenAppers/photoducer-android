@@ -56,7 +56,9 @@ before_script:
 
 script:
   - cd photoducer
-  - gsutil cp gs://research-model-bucket/*.t* assets
+  - gsutil cp gs://research-model-bucket/yolov2_tiny.* assets
+  - touch assets/edges2shoes.tflite
+  - touch assets/edges2shoes.txt
   - ../flutter/bin/flutter -v build apk --release
   - cd ..
   - fastlane submit_playalpha
