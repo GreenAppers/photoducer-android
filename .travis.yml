@@ -60,7 +60,9 @@ script:
   - touch assets/edges2shoes.tflite
   - touch assets/edges2shoes.txt
   - ../flutter/bin/flutter -v build apk --release
-  - cd ..
+  - cd android
+  - ./gradlew crashlyticsUploadSymbolsRelease
+  - cd ../..
   - fastlane submit_playalpha
 
 after_success:
