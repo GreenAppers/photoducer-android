@@ -57,7 +57,6 @@ before_script:
   - source $HOME/google-cloud-sdk/path.bash.inc
   - gcloud version
   - gcloud auth activate-service-account --key-file=research-storage-account.json
-  - cp build.gradle photoducer/android/app/build.gradle
 
 script:
   - cd photoducer
@@ -68,8 +67,7 @@ script:
   - cd android
   - ./gradlew crashlyticsUploadSymbolsRelease
   - cd ../..
-  - find . -name "*.so" -print
-  #- fastlane submit_playalpha
+  - fastlane submit_playalpha
 
 after_success:
   - echo "success"
