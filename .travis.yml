@@ -37,7 +37,8 @@ before_install:
   - echo $TRAVIS_OS_NAME
   - echo ${HOME}
   - echo ${TRAVIS_BUILD_DIR}
-  - yes | sdkmanager "platforms;android-27;ndk-bundle"
+  - yes | sdkmanager "platforms;android-27"
+  - yes | sdkmanager ndk-bundle
   - gem install fastlane
   - if [ ! -d "${HOME}/flutter/bin" ]; then rm -rf ${HOME}/flutter; git clone https://github.com/flutter/flutter.git -b stable --depth 1 ${HOME}/flutter; fi
   - cd photoducer
