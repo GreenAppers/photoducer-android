@@ -1,4 +1,4 @@
-## Photoducer for Android 1.0.2
+## Photoducer for Android 1.0.5
 <img style="float:left" src="icon.png" />
 
 [![Build Status](https://travis-ci.org/GreenAppers/photoducer-android.svg?branch=master)](https://travis-ci.org/GreenAppers/photoducer-android)
