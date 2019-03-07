@@ -29,6 +29,7 @@ android:
 
 cache:
   directories:
+  - vendor/bundle
   - "$HOME/flutter/"
   - "$HOME/google-cloud-sdk/"
 
@@ -36,7 +37,7 @@ before_install:
   - echo $TRAVIS_OS_NAME
   - echo ${HOME}
   - echo ${TRAVIS_BUILD_DIR}
-  - yes | sdkmanager "platforms;android-27"
+  - yes | sdkmanager "platforms;android-27;ndk-bundle"
   - gem install fastlane
   - if [ ! -d "${HOME}/flutter/bin" ]; then rm -rf ${HOME}/flutter; git clone https://github.com/flutter/flutter.git -b stable --depth 1 ${HOME}/flutter; fi
   - cd photoducer
@@ -55,6 +56,7 @@ before_script:
   - source $HOME/google-cloud-sdk/path.bash.inc
   - gcloud version
   - gcloud auth activate-service-account --key-file=research-storage-account.json
+  - cp build.gradle photoducer/android/app/build.gradle
 
 script:
   - cd photoducer
