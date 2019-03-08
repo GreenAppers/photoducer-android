@@ -57,20 +57,19 @@ before_script:
   - source $HOME/google-cloud-sdk/path.bash.inc
   - gcloud version
   - gcloud auth activate-service-account --key-file=research-storage-account.json
-  - cp pubspec.yaml photoducer
 
 script:
-  - mkdir -p symbols/armeabi-v7a
-  - cd symbols/armeabi-v7a
-  - gsutil cp gs://research-artifact-bucket/symbols/libflutter.so/`cat $HOME/flutter/bin/internal/engine.version`/armeabi-v7a/* .
-  - unzip *.zip
-  - cd ../../photoducer
+  - cd photoducer
   - gsutil cp gs://research-model-bucket/yolov2_tiny.* assets
   - touch assets/edges2shoes.tflite
   - touch assets/edges2shoes.txt
   - ${HOME}/flutter/bin/flutter -v build apk --release
-  - cp ../symbols/armeabi-v7a/*.so ./build/app/intermediates/transforms/mergeJniLibs/release/0/lib/armeabi-v7a/
-  - cd android
+  - cp -R ./build/app/intermediates/transforms/mergeJniLibs/release/0/lib debugSymbols
+  - cd debugSymbols/armeabi-v7a
+  - mkdir debug
+  - gsutil cp gs://research-artifact-bucket/symbols/libflutter.so/`cat $HOME/flutter/bin/internal/engine.version`/armeabi-v7a/* debug
+  - unzip -o debug/*.zip
+  - cd ../../android
   - ./gradlew crashlyticsUploadSymbolsRelease
   - cd ../..
   - fastlane submit_playalpha
