@@ -61,8 +61,6 @@ before_script:
 script:
   - cd photoducer
   - gsutil cp gs://greenappers/model/yolov2_tiny.* assets
-  - touch assets/edges2shoes.tflite
-  - touch assets/edges2shoes.txt
   - ${HOME}/flutter/bin/flutter -v build apk --release
   - cp -R ./build/app/intermediates/transforms/mergeJniLibs/release/0/lib debugSymbols
   - cd debugSymbols/armeabi-v7a
